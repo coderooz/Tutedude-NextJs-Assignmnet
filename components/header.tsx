@@ -4,11 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+
 const navigationLinks = [
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact Us" },
-  { href: "/blog", label: "Blog" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact Us" },
+    { href: "/blog", label: "Blog" },
+    { href: "/products", label: "Products" },
+    { href: "/dashboard", label: "Dashboard" },
 ] as const;
+
 
 export default function Header() {
   const pathname = usePathname();

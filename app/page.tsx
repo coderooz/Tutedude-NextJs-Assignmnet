@@ -1,52 +1,60 @@
+
 import Link from "next/link";
+import HelloMessage from "@/components/hello-message";
+
+const links = [
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+    { href: "/blog", label: "Blog" },
+    { href: "/products", label: "Products" },
+    { href: "/dashboard", label: "Dashboard" },
+];
 
 export default function Home() {
     return (
-        <main className="flex-1 flex-col p-14 bg-linear-to-r from-pink-100 to-pink-300">
-            <div className="flex flex-col items-center justify-center gap-4 rounded-lg bg-linear-to-b from-blue-500 to-purple-600 p-8 shadow-lg">
-                <h1 className="text-3xl font-bold text-white">
+        <main className="min-h-screen flex-1 bg-linear-to-r from-pink-100 to-pink-300 p-6 md:p-14">
+            <section className="rounded-xl bg-linear-to-b from-blue-500 to-purple-600 p-8 shadow-lg md:p-12">
+                <h1 className="text-3xl font-bold text-white md:text-4xl">
                     Welcome to My App
                 </h1>
 
-                <p className="text-md text-white">
-                    Enjoy your stay!
+                <p className="mt-3 text-white">
+                    Explore products, articles and live dashboard data.
                 </p>
 
-                <nav className="mt-4 flex gap-4">
-                    <Link
-                        href="/about"
-                        className="rounded-lg bg-white px-4 py-2 text-blue-600 hover:bg-gray-100"
-                    >
-                        About
-                    </Link>
+                <div className="mt-6 rounded-lg bg-white/15 p-4">
+                    <h2 className="mb-2 font-semibold text-white">
+                        API Response
+                    </h2>
+                    <HelloMessage />
+                </div>
 
-                    <Link
-                        href="/contact"
-                        className="rounded-lg bg-white px-4 py-2 text-blue-600 hover:bg-gray-100"
-                    >
-                        Contact
-                    </Link>
-
-                    <Link
-                        href="/blog"
-                        className="rounded-lg bg-white px-4 py-2 text-blue-600 hover:bg-gray-100"
-                    >
-                        Blog
-                    </Link>
+                <nav
+                    aria-label="Main navigation"
+                    className="mt-6 flex flex-wrap gap-3"
+                >
+                    {links.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="rounded-lg bg-white px-4 py-2 font-medium text-blue-700 hover:bg-blue-50"
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
                 </nav>
-            </div>
+            </section>
 
-            <div className="mt-12 rounded-lg bg-linear-to-bl from-white to-gray-400 p-8 shadow-lg">
-                <h2 className="text-2xl font-bold text-gray-800">
-                    About Me
+            <section className="mt-8 rounded-xl bg-white p-8 shadow-lg">
+                <h2 className="text-2xl font-bold text-slate-900">
+                    About This Project
                 </h2>
 
-                <p className="text-gray-600">
-                    I am a passionate developer with experience in building
-                    web applications using Next.js and React. I enjoy creating
-                    beautiful and functional user interfaces.
+                <p className="mt-3 leading-7 text-slate-600">
+                    This project demonstrates Next.js routing, data
+                    fetching, rendering strategies and API routes.
                 </p>
-            </div>
+            </section>
         </main>
     );
 }
