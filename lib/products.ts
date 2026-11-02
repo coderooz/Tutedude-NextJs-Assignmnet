@@ -13,6 +13,18 @@ export type Product = {
     image: string;
 };
 
+export type ProductSource = "live" | "fallback";
+
+export interface ProductCatalogue {
+    products: Product[];
+    source: ProductSource;
+}
+
+export interface ProductDetail {
+    product: Product;
+    source: ProductSource;
+}
+
 function isProduct(value: unknown): value is Product {
     if (typeof value !== "object" || value === null) {
         return false;
@@ -30,10 +42,6 @@ function isProduct(value: unknown): value is Product {
     );
 }
 
-/**
- * Fake Store API answers unknown product IDs with HTTP 200 and an empty body,
- * so the payload has to be read defensively before it is parsed.
- */
 async function readJsonBody(response: Response): Promise<unknown> {
     const body = await response.text();
 
@@ -48,10 +56,6 @@ async function readJsonBody(response: Response): Promise<unknown> {
     }
 }
 
-/**
- * Fetches the live catalogue. Throws on any upstream or payload problem so the
- * caller can decide how to degrade instead of rendering partial data.
- */
 async function fetchLiveProducts(): Promise<Product[]> {
     const response = await fetch(API_URL);
 
@@ -70,22 +74,14 @@ async function fetchLiveProducts(): Promise<Product[]> {
     return data;
 }
 
-/**
- * Static product listing.
- *
- * The page is prerendered at build time, so an unreachable upstream (for
- * example HTTP 403 from a hosting provider's build network) would otherwise
- * fail the whole deployment. Live data keeps the assignment's one hour
- * revalidation; the bundled fallback is revalidated after a minute so the
- * live catalogue is picked up again as soon as it is reachable.
- */
-export async function getProducts(): Promise<Product[]> {
+
+export async function getProducts(): Promise<ProductCatalogue> {
     "use cache";
 
     try {
         const products = await fetchLiveProducts();
         cacheLife("hours");
-        return products;
+        return { products, source: "live" };
     } catch (error) {
         console.warn(
             `[products] Live catalogue unavailable, serving the bundled fallback: ${
@@ -101,13 +97,13 @@ export async function getProducts(): Promise<Product[]> {
         }
 
         cacheLife("minutes");
-        return FALLBACK_PRODUCTS;
+        return { products: FALLBACK_PRODUCTS, source: "fallback" };
     }
 }
 
 export async function getProductById(
     id: string
-): Promise<Product | null> {
+): Promise<ProductDetail | null> {
     if (!/^[1-9]\d*$/.test(id)) {
         return null;
     }
@@ -141,7 +137,7 @@ export async function getProductById(
             return null;
         }
 
-        return product;
+        return { product, source: "live" };
     } catch (error) {
         // The detail route is rendered per request, but the upstream can be
         // unreachable from the hosting network. The bundled snapshot covers the
@@ -161,6 +157,6 @@ export async function getProductById(
             }`
         );
 
-        return fallback ?? null;
+        return fallback ? { product: fallback, source: "fallback" } : null;
     }
 }

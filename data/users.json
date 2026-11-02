@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Ranit Saha",
+    "email": "contact@coderooz.in",
+    "role": "Founder & developer",
+    "location": "West Bengal, India",
+    "initials": "RS"
+  },
+  {
+    "id": 2,
+    "name": "Mira Kapoor",
+    "email": "mira@example.com",
+    "role": "Design reviewer",
+    "location": "Pune, India",
+    "initials": "MK"
+  },
+  {
+    "id": 3,
+    "name": "Dev Patel",
+    "email": "dev@example.com",
+    "role": "QA reviewer",
+    "location": "Ahmedabad, India",
+    "initials": "DP"
+  }
+]

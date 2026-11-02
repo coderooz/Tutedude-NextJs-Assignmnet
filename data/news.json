@@ -1,0 +1,73 @@
+{
+  "updatedAt": "2026-11-02T09:30:00.000Z",
+  "items": [
+    {
+      "id": 1,
+      "slug": "new-newsroom-and-weekly-notes",
+      "number": "01",
+      "title": "A newsroom, and a shorter weekly note",
+      "excerpt": "Fieldnotes now has a dedicated news feed, with individual pages for each announcement and a ten-second refresh window.",
+      "category": "Release",
+      "author": "Ranit Saha",
+      "publishedAt": "2026-11-02T07:30:00.000Z",
+      "readTime": "2 min read",
+      "tag": ["Next.js", "Release"],
+      "paragraphs": [
+        "The site now keeps project announcements in one place. The news feed is generated from a small local dataset, so the page can be rebuilt on a schedule without a database or a CMS.",
+        "Each entry also has its own page. That page is generated from the same record, which means the feed and the detail view can never disagree about the title, date, or summary.",
+        "The feed uses incremental regeneration with a ten-second revalidation window. In practice that means a new entry shows up on the next request after the window expires, without rebuilding the whole site."
+      ]
+    },
+    {
+      "id": 2,
+      "slug": "products-page-refresh",
+      "number": "02",
+      "title": "The product catalogue gets a clearer card layout",
+      "excerpt": "A quieter grid, larger imagery, and an explicit notice when the bundled fallback catalogue is being shown.",
+      "category": "Changelog",
+      "author": "Ranit Saha",
+      "publishedAt": "2026-10-29T10:15:00.000Z",
+      "readTime": "2 min read",
+      "tag": ["Products", "Design"],
+      "paragraphs": [
+        "The catalogue keeps its one-hour cache but now presents products in a calmer grid with consistent image frames and prices that are easy to scan.",
+        "The live catalogue is fetched from a public demo API. When that API cannot be reached, the page falls back to a bundled snapshot. That fallback is now labelled in the interface instead of being passed off as live data.",
+        "Product detail pages still resolve at request time. An unknown identifier returns a 404 rather than an empty product."
+      ]
+    },
+    {
+      "id": 3,
+      "slug": "news-feed-refreshes-every-ten-seconds",
+      "number": "03",
+      "title": "This feed refreshes every ten seconds",
+      "excerpt": "How the news route combines a cached data function with a short revalidation window.",
+      "category": "Engineering",
+      "author": "Ranit Saha",
+      "publishedAt": "2026-10-24T12:00:00.000Z",
+      "readTime": "3 min read",
+      "tag": ["Next.js", "Caching"],
+      "paragraphs": [
+        "The news listing reads a cached function rather than the JSON file directly. The function is marked with the cache directive and a ten-second cache lifetime.",
+        "The first request after deployment fills the cache. Later requests reuse the result until the window expires, at which point the next request triggers a background refresh.",
+        "The page also shows the timestamp of the dataset it rendered. That makes the behaviour visible: the timestamp changes when the cached result is replaced, which is the clearest evidence that regeneration is working."
+      ]
+    },
+    {
+      "id": 4,
+      "slug": "accessibility-pass",
+      "number": "04",
+      "title": "An accessibility pass on navigation and forms",
+      "excerpt": "One main landmark per page, labelled inputs, visible focus rings, and a mobile menu that reports its state.",
+      "category": "Accessibility",
+      "author": "Ranit Saha",
+      "publishedAt": "2026-10-16T09:00:00.000Z",
+      "readTime": "3 min read",
+      "tag": ["Accessibility", "Design"],
+      "paragraphs": [
+        "Every page now owns exactly one main landmark. The shared layout provides the header and footer, while each page renders its own main element, which avoids nested landmarks for screen-reader users.",
+        "Form controls are paired with labels and error messages are announced through live regions. Invalid fields set the appropriate accessibility attributes so the error is not conveyed by colour alone.",
+        "The mobile navigation toggle reports whether the menu is open. Focus outlines are visible on every interactive element, including the brand, navigation links, and buttons."
+      ]
+    }
+  ]
+}

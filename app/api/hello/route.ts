@@ -1,6 +1,5 @@
-
 export async function GET() {
-    return Response.json({
-        message: "Hello from Next.js API Route!",
-    });
+  return Response.json({
+    message: "Hello from Fieldnotes.",
+  });
 }

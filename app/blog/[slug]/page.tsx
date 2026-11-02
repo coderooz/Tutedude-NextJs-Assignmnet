@@ -1,135 +1,96 @@
 
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+
 import BlogData from "@/data/blog.json";
 import type { BlogTypes } from "@/types/blogs.types";
+import { getPostBySlug } from "@/lib/blog";
 
 type BlogParams = {
-    params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>;
 };
 
-function createSlug(title: string): string {
-    return title.toLowerCase().replace(/\s+/g, "-");
-}
-
+const posts = BlogData as BlogTypes[];
 
 export function generateStaticParams() {
-    return BlogData.map((blog) => ({
-        slug: createSlug(blog.title),
-    }));
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export async function generateMetadata({
-    params,
+  params,
 }: BlogParams): Promise<Metadata> {
-    const { slug } = await params;
+  const { slug } = await params;
+  const blog = getPostBySlug(slug);
 
-    const blog = BlogData.find(
-        (post) => createSlug(post.title) === slug
-    );
-
-    return {
-        title: blog ? `${blog.title} | Blog` : "Blog Post",
-        description:
-            blog?.description ?? "Read our latest blog post.",
-    };
+  return {
+    title: blog ? blog.title : "Blog Post",
+    description: blog?.description ?? "Read our latest blog post.",
+  };
 }
 
-async function fetchBlogData(slug: string): Promise<BlogTypes> {
-    const baseUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ??
-        "http://localhost:3000";
+export default async function BlogPost({ params }: BlogParams) {
+  const { slug } = await params;
+  const blog = getPostBySlug(slug);
 
-    const response = await fetch(
-        `${baseUrl}/api/blogs/${encodeURIComponent(slug)}`,
-        { cache: "no-store" }
-    );
+  if (!blog) {
+    notFound();
+  }
 
-    if (response.status === 404) {
-        notFound();
-    }
+  return (
 
-    if (!response.ok) {
-        throw new Error(
-            `Failed to fetch blog post: HTTP ${response.status}`
-        );
-    }
+    <main className="container-page pb-16">
+      <article className="mx-auto max-w-[720px] py-12 md:py-[65px] md:pb-[90px]">
+        <Link className="text-link" href="/blog">
+          ← Back to all articles
+        </Link>
 
-    return response.json() as Promise<BlogTypes>;
-}
+        <p className="eyebrow mt-8">{blog.category}</p>
+        <p className="text-[10px] uppercase tracking-[0.04em] text-[#92978e]">
+          {blog.date} · {blog.readTime}
+        </p>
+        <h1 className="mt-4 text-[clamp(42px,6vw,62px)] leading-[1.03]">
+          {blog.title}
+        </h1>
+        <p className="mt-5 text-lg leading-[1.65] text-muted">
+          {blog.description}
+        </p>
 
-async function BlogPostContent({ params }: BlogParams) {
-    const { slug } = await params;
-    const blog = await fetchBlogData(slug);
+        <div className="art-block mt-8 min-h-[200px] rounded-xl p-[25px] md:min-h-[230px]">
+          <span className="text-[10px] font-bold uppercase tracking-[0.12em]">
+            {blog.category}
+          </span>
+          <strong className="self-end font-serif text-[clamp(84px,14vw,130px)] font-medium leading-[0.8] opacity-50">
+            {blog.number}
+          </strong>
+        </div>
 
-    return (
-        <main className="min-h-screen p-8 md:p-14 bg-linear-to-r from-pink-100 to-pink-300">
-            <article className="mx-auto max-w-4xl">
-                <header className="mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900">
-                        {blog.title}
-                    </h1>
+        <div className="article-body mt-8">
+          {(blog.paragraphs?.length ? blog.paragraphs : blog.content.split("\n\n")).map(
+            (paragraph, index) => (
+              <p key={index}>{paragraph}</p>
+            ),
+          )}
+        </div>
 
-                    <p className="mt-3 text-lg text-gray-600">
-                        {blog.description}
-                    </p>
+        <div className="mt-10 flex flex-wrap gap-2">
+          {blog.tag.map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full border border-line px-2.5 py-1 text-[11px] uppercase tracking-[0.08em] text-muted"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
 
-                    <div className="mt-4 flex flex-wrap gap-2">
-                        {blog.tag.map((tag) => (
-                            <span
-                                key={tag}
-                                className="rounded-full bg-blue-500 px-3 py-1 text-sm font-medium text-white"
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-                </header>
+        <Link className="text-link mt-10" href="/blog">
+          ← More articles
+        </Link>
+      </article>
+    </main>
 
-                <section className="mb-8">
-                    <h2 className="mb-3 text-xl font-semibold text-blue-400">
-                        Keywords
-                    </h2>
-
-                    <div className="flex flex-wrap gap-2">
-                        {blog.keywords.map((keyword) => (
-                            <span
-                                key={keyword}
-                                className="rounded-md bg-gray-100 px-2 py-1 text-sm text-gray-700"
-                            >
-                                {keyword}
-                            </span>
-                        ))}
-                    </div>
-                </section>
-
-                <section>
-                    <div className="whitespace-pre-wrap text-lg leading-8 text-gray-800">
-                        {blog.content}
-                    </div>
-                </section>
-            </article>
-        </main>
-    );
-}
-
-function BlogLoading() {
-    return (
-        <main
-            className="min-h-screen p-8 md:p-14 bg-linear-to-r from-pink-100 to-pink-300"
-            role="status"
-            aria-live="polite"
-        >
-            Loading blog post...
-        </main>
-    );
-}
-
-export default function BlogPost({ params }: BlogParams) {
-    return (
-        <Suspense fallback={<BlogLoading />}>
-            <BlogPostContent params={params} />
-        </Suspense>
-    );
+  );
 }

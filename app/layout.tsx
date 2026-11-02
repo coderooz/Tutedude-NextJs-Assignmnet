@@ -1,27 +1,30 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { DM_Sans, Newsreader } from "next/font/google";
 import "./globals.css";
 
-import Header from "@/components/header";
 import Footers from "@/components/footer";
+import Header from "@/components/header";
+import { UserContextProvider } from "@/context/UserProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "Next.js Assignment Project",
-    template: "%s | Next.js Assignment Project",
+    default: "Fieldnotes",
+    template: "%s | Fieldnotes",
   },
   description:
-    "A Next.js project demonstrating static site generation, server-side rendering, client-side data fetching with SWR, and API routes.",
+    "Notes on building for the web, a small product catalogue, a newsroom, and a members' dashboard.",
 };
 
 export default function RootLayout({
@@ -32,12 +35,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${dmSans.variable} ${newsreader.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footers />
+      <body className="flex min-h-full flex-col bg-paper text-ink">
+        <UserContextProvider>
+          <Header />
+          <div className="flex-1">{children}</div>
+          <Footers />
+        </UserContextProvider>
       </body>
     </html>
   );

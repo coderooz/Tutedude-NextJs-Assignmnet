@@ -1,14 +1,10 @@
-
 import { NextResponse } from "next/server";
-import BlogData from "@/data/blog.json";
 
-
+import { getAllPosts } from "@/lib/blog";
 
 /**
- * 
- * @returns List of blogs from the blog.json file
+ * @returns The editorial blog collection from `data/blog.json`.
  */
 export async function GET() {
-  return NextResponse.json(BlogData);
+  return NextResponse.json(getAllPosts());
 }
-

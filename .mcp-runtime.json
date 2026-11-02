@@ -1,10 +1,10 @@
 {
-  "port": 47010,
-  "pid": 20464,
-  "startedAt": 1792291369749,
+  "port": 47005,
+  "pid": 28748,
+  "startedAt": 1793605260498,
   "hostname": "Coderooz_PC",
   "status": "running",
   "project": "my-nextjs-app",
-  "signature": "9208d32f-7a70-45d2-9f33-31ce1037a475",
-  "lastUpdated": "2026-10-18T02:42:49.754Z"
+  "signature": "6a17b665-1615-45e3-9b72-c6a0f3c8e618",
+  "lastUpdated": "2026-11-02T07:41:00.503Z"
 }

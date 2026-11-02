@@ -1,27 +1,20 @@
 import { NextResponse } from "next/server";
-import BlogData from "@/data/blog.json";
 
-function createSlug(title: string): string {
-    return title.toLowerCase().replace(/\s+/g, "-");
-}
-
+import { getPostBySlug } from "@/lib/blog";
 
 export async function GET(
-    _request: Request,
-    { params }: { params: Promise<{ slug: string }> }
+  _request: Request,
+  { params }: { params: Promise<{ slug: string }> },
 ) {
-    const { slug } = await params;
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
-    const blog = BlogData.find(
-        (post) => createSlug(post.title) === slug
+  if (!post) {
+    return NextResponse.json(
+      { error: "Blog post not found" },
+      { status: 404 },
     );
+  }
 
-    if (!blog) {
-        return NextResponse.json(
-            { error: "Blog post not found" },
-            { status: 404 }
-        );
-    }
-
-    return NextResponse.json(blog);
+  return NextResponse.json(post);
 }

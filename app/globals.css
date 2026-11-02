@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #20251f;
+  --muted: #72786f;
+  --line: #e8e9e3;
+  --paper: #fbfbf8;
+  --green: #46634d;
+  --green-dark: #344d3a;
+  --wash: #e9eee5;
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-green: var(--green);
+  --color-green-dark: var(--green-dark);
+  --color-wash: var(--wash);
+  --font-sans: var(--font-dm-sans);
+  --font-serif: var(--font-newsreader);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+.container-page {
+  width: min(1080px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.eyebrow {
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+  font-weight: 700;
+  margin: 0 0 15px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--green-dark);
+}
+
+.btn-ghost {
+  color: var(--green);
+  border: 1px solid #d7dfd4;
+}
+
+.btn-ghost:hover {
+  background: #f1f4ef;
+}
+
+.card {
+  border: 1px solid var(--line);
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(32, 37, 31, 0.07);
+}
+
+.art-block {
+  background: var(--wash);
+  color: var(--green);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.text-link {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.text-link:hover {
+  color: var(--green-dark);
+}
+
+.article-body {
+  font-family: var(--font-newsreader), Georgia, serif;
+  font-size: 20px;
+  line-height: 1.85;
+  color: #454b43;
+}
+
+.article-body p {
+  margin: 0 0 22px;
+}
+
+@media (max-width: 680px) {
+  .container-page {
+    width: min(100% - 32px, 1080px);
+  }
 }

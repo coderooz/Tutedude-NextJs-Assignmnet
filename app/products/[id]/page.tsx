@@ -1,8 +1,9 @@
 
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+
 import { getProductById } from "@/lib/products";
 
 // The header's usePathname() cannot be prerendered for dynamic params, and this
@@ -10,79 +11,84 @@ import { getProductById } from "@/lib/products";
 export const instant = false;
 
 type PageProps = {
-    params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>;
 };
 
-async function ProductDetails({ params }: PageProps) {
-    const { id } = await params;
-    const product = await getProductById(id);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const result = await getProductById(id);
 
-    if (!product) {
-        notFound();
-    }
-
-    return (
-        <main className="min-h-screen bg-slate-50 p-6 md:p-12">
-            <article className="mx-auto grid max-w-5xl gap-8 rounded-2xl border bg-white p-6 shadow-sm md:grid-cols-2 md:p-10">
-                <div className="flex items-center justify-center">
-                    <Image
-                        src={product.image}
-                        alt={product.title}
-                        width={480}
-                        height={480}
-                        unoptimized
-                        loading="eager"
-                        className="max-h-96 w-full object-contain"
-                    />
-                </div>
-
-                <div>
-                    <p className="text-sm font-medium uppercase text-blue-700">
-                        {product.category}
-                    </p>
-
-                    <h1 className="mt-3 text-3xl font-bold text-slate-900">
-                        {product.title}
-                    </h1>
-
-                    <p className="mt-4 text-2xl font-bold text-blue-700">
-                        ${product.price.toFixed(2)}
-                    </p>
-
-                    <h2 className="mt-6 font-semibold text-slate-900">
-                        Description
-                    </h2>
-                    <p className="mt-2 leading-7 text-slate-600">
-                        {product.description}
-                    </p>
-
-                    <Link
-                        href="/products"
-                        className="mt-8 inline-block rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700"
-                    >
-                        Back to Products
-                    </Link>
-                </div>
-            </article>
-        </main>
-    );
+  return {
+    title: result ? result.product.title : "Product not found",
+    description:
+      result?.product.description ??
+      "The requested product could not be found.",
+  };
 }
 
-function ProductLoading() {
-    return (
-        <main
-            className="min-h-screen p-8 text-slate-700"
-            role="status"
-        >
-            Loading product details...
-        </main>
-    );
-}
+export default async function ProductPage({ params }: PageProps) {
+  const { id } = await params;
+  const result = await getProductById(id);
 
-export default function ProductPage({ params }: PageProps) {
-    return (
-        <Suspense fallback={<ProductLoading />}>
-            <ProductDetails params={params} />
-        </Suspense>
-    );
+  if (!result) {
+    notFound();
+  }
+
+  const { product, source } = result;
+
+  return (
+    <main className="container-page pb-16">
+      <div className="py-8">
+        <Link className="text-link" href="/products">
+          ← Back to products
+        </Link>
+      </div>
+
+      <article className="grid gap-8 md:grid-cols-2 md:gap-10">
+        <div className="relative aspect-square w-full rounded-xl border border-line bg-white">
+          <Image
+            src={product.image}
+            alt={product.title}
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            preload
+            className="object-contain p-8"
+          />
+        </div>
+
+        <div className="self-center">
+          <p className="eyebrow">{product.category}</p>
+
+          <h1 className="text-[clamp(30px,4vw,44px)] leading-[1.08]">
+            {product.title}
+          </h1>
+
+          <p className="mt-4 font-serif text-3xl text-green">
+            ${product.price.toFixed(2)}
+          </p>
+
+          {source === "fallback" ? (
+            <p className="mt-4 rounded-lg border border-[#d7dfd4] bg-wash p-3 text-[12px] leading-[1.7] text-[#4f5c51]">
+              <strong className="font-semibold text-ink">
+                Saved snapshot.
+              </strong>{" "}
+              The live product API was unreachable for this request, so this
+              record comes from the bundled catalogue.
+            </p>
+          ) : null}
+
+          <h2 className="mt-6 text-xl">Description</h2>
+          <p className="mt-2 leading-[1.8] text-muted">
+            {product.description}
+          </p>
+
+          <Link className="btn btn-primary mt-8" href="/products">
+            Back to products
+          </Link>
+        </div>
+      </article>
+    </main>
+  );
 }

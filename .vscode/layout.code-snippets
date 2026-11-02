@@ -1,0 +1,18 @@
+{
+    "Page or Layout Header (Coderooz)": {
+        "prefix": "pageheader",
+        "body": [
+            "/** @format",
+            " * @coderooz",
+            " * @filePath ${RELATIVE_FILEPATH}",
+            " * @type ${2:Page|Layout}",
+            " * @route /${1:path}",
+            " * @description $3",
+            " * @since ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+            " * @lastModified ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}",
+            " * @status stable",
+            " */"
+        ],
+        "description": "Header for pages and layouts"
+    }
+}

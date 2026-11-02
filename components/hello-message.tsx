@@ -24,19 +24,23 @@ export default function HelloMessage() {
     );
 
     if (isLoading) {
-        return <p role="status">Loading greeting...</p>;
+        return (
+            <p role="status" className="text-sm text-muted">
+                Loading greeting...
+            </p>
+        );
     }
 
     if (error) {
         return (
-            <p role="alert" className="text-red-700">
+            <p role="alert" className="text-sm font-medium text-red-700">
                 Unable to load the greeting.
             </p>
         );
     }
 
     return (
-        <p className="text-lg font-medium text-white">
+        <p className="text-base font-semibold text-ink">
             {data?.message}
         </p>
     );

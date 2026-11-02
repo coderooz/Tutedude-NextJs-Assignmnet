@@ -1,27 +1,59 @@
 [
-    {
-        "id": 1,
-        "title": "My First Blog Post",
-        "description": "This is the description of my first blog post.",
-        "tag": ["Next.js", "React", "Blog"],
-        "keywords": ["Blog", "First Post", "Next.js", "React"],
-        "content": "This is the content of my first blog post."
-    },
-    {
-        "id": 2,
-        "title": "My Second Blog Post",
-        "description": "This is the description of my second blog post.",
-        "tag": ["Next.js", "React", "Blog"],
-        "keywords": ["Blog", "Second Post", "Next.js", "React"],
-        "content": "This is the content of my second blog post."
-    },
-    {
-        "id": 3,
-        "title": "My Third Blog Post",
-        "description": "This is the description of my third blog post.",
-        "tag": ["Next.js", "React", "Blog"],
-        "keywords": ["Blog", "Third Post", "Next.js", "React"],
-        "content": "This is the content of my third blog post."
-    }
-
+  {
+    "id": 1,
+    "slug": "building-for-the-web",
+    "number": "01",
+    "title": "Building for the web, one page at a time",
+    "description": "A few thoughts on keeping web projects clear, useful, and enjoyable to work on.",
+    "category": "Web development",
+    "date": "November 02, 2026",
+    "readTime": "4 min read",
+    "tag": ["Next.js", "React", "Blog"],
+    "keywords": ["Next.js", "App Router", "rendering", "web development"],
+    "paragraphs": [
+      "The best websites do not need to be complicated. They need to help people find what they came for, understand what they are looking at, and move naturally to the next thing.",
+      "A good starting point is a clear structure. Give every page a purpose, keep navigation predictable, and make the content the most important part of the experience.",
+      "Next.js helps organise that work with file-based routing, reusable components, and flexible rendering strategies. Start with the fundamentals, then add complexity only when the project needs it.",
+      "This project follows the same idea. The home, blog, news, and product pages each have one job, and the shared header and footer keep the experience consistent as you move between them."
+    ],
+    "content": "The best websites do not need to be complicated. They need to help people find what they came for, understand what they are looking at, and move naturally to the next thing.\n\nA good starting point is a clear structure. Give every page a purpose, keep navigation predictable, and make the content the most important part of the experience.\n\nNext.js helps organise that work with file-based routing, reusable components, and flexible rendering strategies. Start with the fundamentals, then add complexity only when the project needs it.\n\nThis project follows the same idea. The home, blog, news, and product pages each have one job, and the shared header and footer keep the experience consistent as you move between them."
+  },
+  {
+    "id": 2,
+    "slug": "small-details-matter",
+    "number": "02",
+    "title": "Why the small details matter",
+    "description": "Readable type, useful spacing, and consistent navigation make a project easier to use.",
+    "category": "Design notes",
+    "date": "October 26, 2026",
+    "readTime": "3 min read",
+    "tag": ["Design", "Accessibility", "Blog"],
+    "keywords": ["accessibility", "typography", "responsive design", "focus states"],
+    "paragraphs": [
+      "People notice when an interface makes their next step obvious. They also notice when labels are unclear, links move around, or a page feels crowded.",
+      "Small decisions add up: a comfortable reading width, consistent heading levels, visible focus states, and navigation that works on a phone.",
+      "These details are not decoration. They reduce friction and let the content speak for itself.",
+      "A quick check at 375, 768, and 1280 pixels catches most layout problems before they reach a reader. If the page still works at those widths, it usually works everywhere in between."
+    ],
+    "content": "People notice when an interface makes their next step obvious. They also notice when labels are unclear, links move around, or a page feels crowded.\n\nSmall decisions add up: a comfortable reading width, consistent heading levels, visible focus states, and navigation that works on a phone.\n\nThese details are not decoration. They reduce friction and let the content speak for itself.\n\nA quick check at 375, 768, and 1280 pixels catches most layout problems before they reach a reader. If the page still works at those widths, it usually works everywhere in between."
+  },
+  {
+    "id": 3,
+    "slug": "learning-by-building",
+    "number": "03",
+    "title": "Learning by building small projects",
+    "description": "A focused project is often the fastest way to understand a new framework.",
+    "category": "Learning",
+    "date": "October 18, 2026",
+    "readTime": "5 min read",
+    "tag": ["Learning", "Next.js", "Blog"],
+    "keywords": ["learning", "projects", "Next.js", "rendering strategies"],
+    "paragraphs": [
+      "When learning a framework, it is tempting to start with a large product idea. A smaller project can teach the same core concepts with fewer distractions.",
+      "A blog is a useful example because it naturally includes a home page, a collection of posts, individual detail pages, and shared navigation.",
+      "Build one route at a time. Test it, understand how data reaches the page, and document the rendering choices you make.",
+      "Over time those small choices become a reference you can reuse: a pattern for static pages, one for request-time data, and one for content that should refresh on a schedule."
+    ],
+    "content": "When learning a framework, it is tempting to start with a large product idea. A smaller project can teach the same core concepts with fewer distractions.\n\nA blog is a useful example because it naturally includes a home page, a collection of posts, individual detail pages, and shared navigation.\n\nBuild one route at a time. Test it, understand how data reaches the page, and document the rendering choices you make.\n\nOver time those small choices become a reference you can reuse: a pattern for static pages, one for request-time data, and one for content that should refresh on a schedule."
+  }
 ]
